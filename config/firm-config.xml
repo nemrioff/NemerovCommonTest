@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<firm-config xmlns="http://nemiroff.ru" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://nemiroff.ru firm-config.xsd">
+    <products>
+        <product name="borsch">
+            <proportions>
+                <proportion material="water" quantity="2.5"/>
+                <proportion material="beef" quantity="0.4"/>
+                <proportion material="potatoes" quantity="0.3"/>
+                <proportion material="beet" quantity="0.2"/>
+                <proportion material="carrots" quantity="0.1"/>
+                <proportion material="cabbage" quantity="0.25"/>
+                <proportion material="onion" quantity="0.1"/>
+                <proportion material="tomato-paste" quantity="0.08"/>
+                <proportion material="salt" quantity="0.02"/>
+            </proportions>
+        </product>
+        <product name="pelmeni">
+            <proportions>
+                <proportion material="flour" quantity="0.75"/>
+                <proportion material="milk" quantity="0.1"/>
+                <proportion material="water" quantity="0.1"/>
+                <proportion material="eggs" quantity="0.1"/>
+                <proportion material="salt" quantity="0.04"/>
+                <proportion material="beef" quantity="0.5"/>
+                <proportion material="pork" quantity="0.5"/>
+                <proportion material="onion" quantity="0.2"/>
+            </proportions>
+        </product>
+    </products>
+    <materials>
+        <material name="water" price="0.01"/>
+        <material name="beef" price="200"/>
+        <material name="potatoes" price="30"/>
+        <material name="beet" price="22.5"/>
+        <material name="carrots" price="37.37"/>
+        <material name="cabbage" price="18.86"/>
+        <material name="onion" price="20"/>
+        <material name="tomato-paste" price="156"/>
+        <material name="salt" price="18.2"/>
+        <material name="flour" price="33.74"/>
+        <material name="milk" price="50"/>
+        <material name="eggs" price="40"/>
+        <material name="pork" price="250"/>
+    </materials>
+</firm-config>

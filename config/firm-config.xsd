@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://nemiroff.ru" xmlns="http://nemiroff.ru">
+    <xs:element name="product">
+        <xs:complexType>
+            <xs:sequence minOccurs="1" maxOccurs="1">
+                <xs:element ref="proportions"/>
+            </xs:sequence>
+            <xs:attribute type="xs:string" name="name" use="required"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="proportion">
+        <xs:complexType>
+            <xs:simpleContent>
+                <xs:extension base="xs:string">
+                    <xs:attribute type="xs:string" name="material" use="required"/>
+                    <xs:attribute type="xs:float" name="quantity" use="required"/>
+                </xs:extension>
+            </xs:simpleContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="proportions">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="proportion" maxOccurs="unbounded" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="materials">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="material" maxOccurs="unbounded" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="firm-config">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="products" minOccurs="1" maxOccurs="1"/>
+                <xs:element ref="materials" minOccurs="1" maxOccurs="1"/>
+            </xs:sequence>
+        </xs:complexType>
+        <xs:key name="materials">
+                <xs:selector xpath="materials/material"/>
+            <xs:field xpath="@name"/>
+        </xs:key>
+        <xs:keyref name="proportion-to-materials" refer="materials">
+            <xs:selector xpath="products/product/proportions/proportion"/>
+            <xs:field xpath="@material"/>
+        </xs:keyref>
+    </xs:element>
+    <xs:element name="products">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="product" maxOccurs="unbounded" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="material">
+        <xs:complexType>
+            <xs:simpleContent>
+                <xs:extension base="xs:string">
+                    <xs:attribute type="xs:string" name="name" use="required"/>
+                    <xs:attribute type="xs:float" name="price" use="required"/>
+                </xs:extension>
+            </xs:simpleContent>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
