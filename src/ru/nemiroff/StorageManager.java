@@ -7,10 +7,9 @@ import java.util.Map;
  */
 public class StorageManager {
 
-    Map<Material, Float> storageMaterials = Storage.getInstance().getMaterials();
+    Map<Thing, Float> storageMaterials = Storage.getInstance().getMaterials();
 
-    public void addMaterial(Material material, Float quantity) {
-        if (quantity == null) return;
+    public void addMaterial(Thing material, float quantity) {
         Float value = storageMaterials.get(material);
         if (value == null) {
             storageMaterials.put(material, quantity);
@@ -19,38 +18,28 @@ public class StorageManager {
         }
     }
 
-    public void addMaterials(Map<Material, Float> materials) {
-        for (Material material : materials.keySet()) {
-            addMaterial(material, materials.get(material));
-        }
-    }
-
-    public boolean checkEnoughMaterial(Material material, Float quantity) {
-        if (quantity == null) return false;
+    public boolean checkEnoughMaterial(Thing material, float portion, float quantity) {
         Float value = storageMaterials.get(material);
-        return value != null && value >= quantity;
+        return value != null && value >= (portion * quantity);
     }
 
-    public boolean checkEnoughMaterials(Map<Material, Float> materials) {
-        for (Material material : materials.keySet()) {
-            if(!checkEnoughMaterial(material, materials.get(material))) {
+    public boolean checkEnoughMaterials(Map<Thing, Float> materials, float quantity) {
+        for (Thing material : materials.keySet()) {
+            if(!checkEnoughMaterial(material, materials.get(material), quantity)) {
                 return false;
             }
         }
         return true;
     }
 
-    public void removeMaterial(Material material, Float quantity) {
-        if(!checkEnoughMaterial(material, quantity)) return;
-        if (quantity == null) return;
+    public void removeMaterial(Thing material, float portion, float quantity) {
         Float value = storageMaterials.get(material);
-        storageMaterials.put(material, value - quantity);
+        storageMaterials.put(material, value - portion * quantity);
     }
 
-    public void removeMaterials(Map<Material, Float> materials) {
-        checkEnoughMaterials(materials);
-        for (Material material : materials.keySet()) {
-            removeMaterial(material, materials.get(material));
+    public void removeMaterials(Map<Thing, Float> materials, float quantity) {
+        for (Thing material : materials.keySet()) {
+            removeMaterial(material, materials.get(material), quantity);
         }
     }
 

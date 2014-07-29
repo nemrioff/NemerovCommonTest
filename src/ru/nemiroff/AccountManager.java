@@ -15,7 +15,7 @@ public class AccountManager {
         return account.getMoney() >= money;
     }
 
-    private void subMoney(float money) {
+    public void subMoney(float money) {
         if(!checkEnoughMoney(money)) return;
         account.setMoney(account.getMoney() - money);
     }

@@ -7,7 +7,7 @@ import java.util.Map;
  */
 public class Storage {
 
-    private Map<Material, Float> materials;
+    private Map<Thing, Float> materials;
 
     private static Storage instance = null;
 
@@ -20,11 +20,11 @@ public class Storage {
         return instance;
     }
 
-    public Map<Material, Float> getMaterials() {
+    public Map<Thing, Float> getMaterials() {
         return materials;
     }
 
-    public void setMaterials(Map<Material, Float> materials) {
+    public void setMaterials(Map<Thing, Float> materials) {
         this.materials = materials;
     }
 }

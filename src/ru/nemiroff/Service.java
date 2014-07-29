@@ -5,8 +5,8 @@ package ru.nemiroff;
  */
 public interface Service {
 
-    buyProduct(Product product, Float quantity);
+    boolean buyProduct(String product, float quantity);
 
-    sellMaterial(Material material, Float quantity);
+    boolean sellMaterial(String material, float quantity);
 
 }

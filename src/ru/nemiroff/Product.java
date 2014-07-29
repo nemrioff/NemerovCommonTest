@@ -5,25 +5,27 @@ import java.util.Map;
 /**
  * Created by nemiroff on 29.07.2014.
  */
-public class Product {
+public class Product extends Thing {
 
-    private String name;
+    private Map<Thing, Float> proportions;
 
-    private Map<Material, Float> proportions;
-
-    public String getName() {
-        return name;
+    @Override
+    public float getPrice() {
+        float result = 0f;
+        for (Thing thing : proportions.keySet()) {
+            if(proportions.get(thing) != null) {
+                result += thing.getPrice() * proportions.get(thing);
+            }
+        }
+        return result;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Map<Material, Float> getProportions() {
+    public Map<Thing, Float> getProportions() {
         return proportions;
     }
 
-    public void setProportions(Map<Material, Float> proportions) {
+    public void setProportions(Map<Thing, Float> proportions) {
         this.proportions = proportions;
     }
+
 }

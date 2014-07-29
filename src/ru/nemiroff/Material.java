@@ -1,24 +1,21 @@
 package ru.nemiroff;
 
+import java.util.Map;
+
 /**
  * Created by nemiroff on 29.07.2014.
  */
-public class Material {
+public class Material extends Thing {
 
-    private String name;
+    private float price;
 
-    private Float price;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Float getPrice() {
+    public float getPrice() {
         return price;
+    }
+
+    @Override
+    public Map<Thing, Float> getProportions() {
+        return null;
     }
 
     public void setPrice(Float price) {
