@@ -19,8 +19,8 @@ import java.io.IOException;
  */
 public class FirmConfigParser {
 
-    private final static String FIRM_CONFIG_XML = "config/firm-config.xml";
-    private final static String FIRM_CONFIG_XSD = "config/firm-config.xsd";
+    private final static String FIRM_CONFIG_XML = "Server/config/firm-config.xml";
+    private final static String FIRM_CONFIG_XSD = "Server/config/firm-config.xsd";
 
     public static Document getDocument() {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();

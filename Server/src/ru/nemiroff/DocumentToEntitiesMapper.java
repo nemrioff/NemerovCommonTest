@@ -23,7 +23,7 @@ public class DocumentToEntitiesMapper {
 
     private ThingsManager materialsManager = new ThingsManager();
 
-    private ThingsManager productsManager = new ThingsManager();;
+    private ThingsManager productsManager = new ThingsManager();
 
     private static DocumentToEntitiesMapper instance = null;
 

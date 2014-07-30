@@ -23,4 +23,8 @@ public class AccountManager {
         account.setMoney(account.getMoney().subtract(new BigDecimal(money, MathContext.DECIMAL32)));
     }
 
+    public BigDecimal getAmountOfMoney() {
+        return account.getMoney();
+    }
+
 }
