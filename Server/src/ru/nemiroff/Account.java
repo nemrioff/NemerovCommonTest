@@ -1,11 +1,14 @@
 package ru.nemiroff;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+
 /**
  * Created by nemiroff on 29.07.2014.
  */
 public class Account {
 
-    private float money;
+    private BigDecimal money = new BigDecimal(10000, MathContext.DECIMAL32);
 
     private static Account instance = null;
 
@@ -18,11 +21,11 @@ public class Account {
         return instance;
     }
 
-    public float getMoney() {
+    public BigDecimal getMoney() {
         return money;
     }
 
-    public void setMoney(float money) {
+    public void setMoney(BigDecimal money) {
         this.money = money;
     }
 }

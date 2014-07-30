@@ -21,9 +21,9 @@ public class DocumentToEntitiesMapper {
 
     private Document document = FirmConfigParser.getDocument();
 
-    private ThingsManager materialsManager;
+    private ThingsManager materialsManager = new ThingsManager();
 
-    private ThingsManager productsManager;
+    private ThingsManager productsManager = new ThingsManager();;
 
     private static DocumentToEntitiesMapper instance = null;
 

@@ -16,16 +16,16 @@ public class ServiceImpl implements Service {
             return false;
         }
         storageManager.removeMaterials(product.getProportions(), quantity);
-        accountManager.addMoney(product.getPrice());
+        accountManager.addMoney(product.getPrice() * quantity);
         return true;
     }
 
     public boolean sellMaterial(String materialName, float quantity) {
         Thing material = materialsManager.getThingByName(materialName);
-        if(!accountManager.checkEnoughMoney(material.getPrice())) {
+        if(!accountManager.checkEnoughMoney(material.getPrice() * quantity)) {
             return false;
         }
-        accountManager.subMoney(material.getPrice());
+        accountManager.subMoney(material.getPrice() * quantity);
         storageManager.addMaterial(material, quantity);
         return true;
     }

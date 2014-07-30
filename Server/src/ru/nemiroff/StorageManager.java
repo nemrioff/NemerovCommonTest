@@ -7,9 +7,8 @@ import java.util.Map;
  */
 public class StorageManager {
 
-    Map<Thing, Float> storageMaterials = Storage.getInstance().getMaterials();
-
     public void addMaterial(Thing material, float quantity) {
+        Map<Thing, Float> storageMaterials = Storage.getInstance().getMaterials();
         Float value = storageMaterials.get(material);
         if (value == null) {
             storageMaterials.put(material, quantity);
@@ -19,7 +18,7 @@ public class StorageManager {
     }
 
     public boolean checkEnoughMaterial(Thing material, float portion, float quantity) {
-        Float value = storageMaterials.get(material);
+        Float value = Storage.getInstance().getMaterials().get(material);
         return value != null && value >= (portion * quantity);
     }
 
@@ -33,6 +32,7 @@ public class StorageManager {
     }
 
     public void removeMaterial(Thing material, float portion, float quantity) {
+        Map<Thing, Float> storageMaterials = Storage.getInstance().getMaterials();
         Float value = storageMaterials.get(material);
         storageMaterials.put(material, value - portion * quantity);
     }

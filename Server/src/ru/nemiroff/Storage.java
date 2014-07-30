@@ -1,5 +1,6 @@
 package ru.nemiroff;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -7,7 +8,7 @@ import java.util.Map;
  */
 public class Storage {
 
-    private Map<Thing, Float> materials;
+    private Map<Thing, Float> materials = new HashMap<Thing, Float>();
 
     private static Storage instance = null;
 
@@ -26,5 +27,11 @@ public class Storage {
 
     public void setMaterials(Map<Thing, Float> materials) {
         this.materials = materials;
+    }
+
+    public void ptintMaterials() {
+        for (Thing thing : materials.keySet()) {
+            System.out.println(thing.getName() + " = " + materials.get(thing));
+        }
     }
 }
