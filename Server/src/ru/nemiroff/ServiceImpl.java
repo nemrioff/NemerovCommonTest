@@ -54,6 +54,15 @@ public class ServiceImpl implements Service {
         return result;
     }
 
+    public Map<String, Float> getStorage() {
+        Map<Thing, Float> storage = storageManager.getAllMaterials();
+        Map<String, Float> result = new HashMap<String, Float>();
+        for (Thing material : storage.keySet()) {
+            result.put(material.getName(), storage.get(material));
+        }
+        return result;
+    }
+
     public BigDecimal getAmountOfFirmMoney() {
         return accountManager.getAmountOfMoney();
     }

@@ -11,13 +11,13 @@ public class CustomerStatisticModel extends StatisticModel {
 
     private int customerId;
 
-    private Map<String, Float> products = new HashMap<String, Float>();
+//    private Map<String, Float> products = new HashMap<String, Float>();
 
     private float money;
 
     private BigDecimal spentMoney = new BigDecimal(0);
 
-    private int ordersCount = 0;
+//    private int ordersCount = 0;
 
 
     public CustomerStatisticModel(int customerId, float money) {
@@ -29,18 +29,18 @@ public class CustomerStatisticModel extends StatisticModel {
         return money;
     }
 
-    public Map<String, Float> getProducts() {
-        return products;
-    }
+//    public Map<String, Float> getProducts() {
+//        return products;
+//    }
 
     public void addDeal(String product, float quantity, float newMoney, float spentMoney) {
-        if(products.containsKey(product)) {
-            products.put(product, products.get(product) + quantity);
-        } else {
-            products.put(product, quantity);
-        }
+//        if(products.containsKey(product)) {
+//            products.put(product, products.get(product) + quantity);
+//        } else {
+//            products.put(product, quantity);
+//        }
         money = newMoney;
-        ordersCount++;
+//        ordersCount++;
         this.spentMoney = this.spentMoney.add(new BigDecimal(spentMoney));
     }
 

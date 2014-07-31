@@ -14,11 +14,11 @@ public class OrdersByCustomerRecord extends Record {
     private float money;
 
     public String getHeader() {
-        return "Идентификатор" + delimiter + "Сумма заказов" + delimiter + "Остаток средств";
+        return getRecord("Id", "Orders sum", "Balance", "Orders Sum + Balance");
     }
 
     public String getRecordPreview() {
-        return id + delimiter + ordersSum + delimiter + money;
+        return getRecord(id, ordersSum, money, ordersSum.add(new BigDecimal(money)));
     }
 
     public void setId(int id) {

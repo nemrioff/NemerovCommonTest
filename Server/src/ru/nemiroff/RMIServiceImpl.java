@@ -30,6 +30,10 @@ public class RMIServiceImpl implements RMIService {
         return service.getMaterialsPrice();
     }
 
+    public Map<String, Float> getStorage() throws RemoteException {
+        return service.getStorage();
+    }
+
     public BigDecimal getAmountOfFirmMoney() throws RemoteException {
         return service.getAmountOfFirmMoney();
     }

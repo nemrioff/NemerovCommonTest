@@ -43,4 +43,7 @@ public class StorageManager {
         }
     }
 
+    public Map<Thing, Float> getAllMaterials() {
+        return Storage.getInstance().getMaterials();
+    }
 }

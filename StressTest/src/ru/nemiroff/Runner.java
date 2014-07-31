@@ -1,9 +1,10 @@
 package ru.nemiroff;
 
-import java.io.PrintWriter;
-import java.io.Writer;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -16,14 +17,29 @@ public class Runner {
 
     public static void main(String[] args) {
 
-        Config.getInstance();
+        Properties properties = new Properties();
+        try {
+            properties.load(new FileInputStream("StressTest/params.properties"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        ExecutorService service = Executors.newFixedThreadPool(600);
-        for (int i = 0; i < 300; i++) {
-            service.submit(new Provider(i));
+        Config.getInstance();
+        ProductStatisticModelPool.getInstance();
+
+        int customerQt = Integer.parseInt(properties.getProperty("customer.quantity"));
+        float customerMoney = Float.parseFloat(properties.getProperty("customer.money"));
+        int customerMaxDenials = Integer.parseInt(properties.getProperty("customer.maxDenials"));
+        int providerQt = Integer.parseInt(properties.getProperty("provider.quantity"));
+        int providerInterval = Integer.parseInt(properties.getProperty("provider.interval.ms"));
+
+        ExecutorService service = Executors.newFixedThreadPool(providerQt + customerQt);
+        List<Future<StatisticModel>> providerResults = new ArrayList<Future<StatisticModel>>();
+        for (int i = 0; i < providerQt; i++) {
+            providerResults.add(service.submit(new Provider(i, providerInterval)));
         }
         List<Future<StatisticModel>> results = new ArrayList<Future<StatisticModel>>();
-        List<Customer> customers = CustomerFactory.newCustomers(300, 5, 10000);
+        List<Customer> customers = CustomerFactory.newCustomers(customerQt, customerMaxDenials, customerMoney);
         for (Customer customer : customers) {
             results.add(service.submit(customer));
         }
@@ -38,13 +54,43 @@ public class Runner {
             }
         }
 
-        Writer writer = new PrintWriter(System.out);
+        for (Future<StatisticModel> providerResult : providerResults) {
+            try {
+                providerResult.get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+        }
 
-        List<Record> records = ModelsToRecords.getOrdersByCustomerRecords(model);
+        try {
+            Writer ordersByCustomer = new FileWriter("ordersByCustomer.csv");
+            List<Record> records = ModelsToRecords.getOrdersByCustomerRecords(model);
+            new StatisticTable(records, ordersByCustomer).printTable();
+            ordersByCustomer.close();
 
-        System.out.println("dsfgdg");
+            List<ProductStatisticModel> productModel = ProductStatisticModelPool.getInstance().getModel();
+            Writer ordersByProducts = new FileWriter("ordersByProducts.csv");
+            records = ModelsToRecords.getOrdersByProductsRecords(productModel);
+            new StatisticTable(records, ordersByProducts).printTable();
+            ordersByProducts.close();
 
-        new StatisticTable(records, writer).printTable();
+            Map<String, Float> storage = ServiceHelper.getService().getStorage();
+            Writer storageWriter = new FileWriter("storage.csv");
+            records = ModelsToRecords.getStorageRecords(storage);
+            new StatisticTable(records, storageWriter).printTable();
+            storageWriter.close();
+
+            System.out.println(ServiceHelper.getService().getAmountOfFirmMoney());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        System.exit(0);
+
     }
 
 }

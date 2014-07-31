@@ -10,6 +10,8 @@ public abstract class Actor implements Callable<StatisticModel> {
 
     protected int id;
 
+    protected static boolean terminate = false;
+
     protected Random random = new Random();
 
     protected Actor(int id) {

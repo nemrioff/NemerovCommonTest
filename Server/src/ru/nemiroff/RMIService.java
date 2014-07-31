@@ -25,6 +25,8 @@ public interface RMIService extends Remote {
 
     /*  Statistic methods */
 
+    Map<String, Float> getStorage() throws RemoteException;;
+
     BigDecimal getAmountOfFirmMoney() throws RemoteException;
 
 }

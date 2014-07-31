@@ -1,5 +1,7 @@
 package ru.nemiroff;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
@@ -13,6 +15,11 @@ public class Runner {
 
     public static void main(String args[]) {
         try {
+
+            if(args.length > 0) {
+                Account.getInstance().setMoney(new BigDecimal(args[0], MathContext.DECIMAL32));
+            }
+
             RMIService service = new RMIServiceImpl();
             RMIService stub = (RMIService) UnicastRemoteObject.exportObject(service, 0);
 
@@ -38,7 +45,7 @@ public class Runner {
 //
 //        System.out.println(service.buyProduct("borsch", 1));
 //
-//        Storage.getInstance().ptintMaterials();
-//        System.out.println(Account.getInstance().getMoney());
+        Storage.getInstance().ptintMaterials();
+        System.out.println(Account.getInstance().getMoney());
     }
 }

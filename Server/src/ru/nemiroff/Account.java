@@ -8,7 +8,9 @@ import java.math.MathContext;
  */
 public class Account {
 
-    private BigDecimal money = new BigDecimal(10000, MathContext.DECIMAL32);
+    private final static int DEFAULT_START_MONEY = 10000;
+
+    private BigDecimal money = new BigDecimal(DEFAULT_START_MONEY, MathContext.DECIMAL32);
 
     private static Account instance = null;
 

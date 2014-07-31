@@ -19,18 +19,16 @@ public class StatisticTable {
     }
 
     public void printTable() {
-//        try {
+        try {
             if (records.size() != 0) {
-//                writer.write(records.get(0).getHeader() + "\n");
-                System.out.println(records.get(0).getHeader());
+                writer.write(records.get(0).getHeader());
             }
             for (Record record : records) {
-//                writer.write(record.getRecordPreview() + "\n");
-                System.out.println(record.getRecordPreview());
+                writer.write(record.getRecordPreview());
             }
-//        }catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

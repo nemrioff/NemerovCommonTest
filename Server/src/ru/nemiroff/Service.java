@@ -23,6 +23,8 @@ public interface Service {
 
     /*  Statistic methods */
 
+    Map<String, Float> getStorage();
+
     BigDecimal getAmountOfFirmMoney();
 
 }
