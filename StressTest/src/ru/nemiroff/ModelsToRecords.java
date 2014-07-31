@@ -34,7 +34,7 @@ public class ModelsToRecords {
         return result;
     }
 
-    public static List<Record> getStorageRecords(Map<String, Float> models) {
+    public static List<Record> getStorageRecords(Map<String, Double> models) {
         List<Record> result = new ArrayList<Record>();
         for (String material : models.keySet()) {
             StorageRecord record = new StorageRecord();

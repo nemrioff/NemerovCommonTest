@@ -1,7 +1,5 @@
 package ru.nemiroff;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,57 +11,56 @@ public class ServiceImpl implements Service {
 
     private StorageManager storageManager = new StorageManager();
     private AccountManager accountManager = new AccountManager();
-    private ThingsManager productsManager = DocumentToEntitiesMapper.getInstance().getProductsManager();
-    private ThingsManager materialsManager = DocumentToEntitiesMapper.getInstance().getMaterialsManager();
+    private FirmConfig firmConfig = FirmConfigFactory.getConfigFactory();
+    private ThingCollection productCollection = firmConfig.getProductCollection();
+    private ThingCollection materialCollection = firmConfig.getMaterialCollection();
 
-    public boolean buyProduct(String productName, float quantity) {
-        Thing product = productsManager.getThingByName(productName);
-        if(!storageManager.checkEnoughMaterials(product.getProportions(), quantity)) {
+    public boolean buyProduct(String productName, int quantity) throws Exception {
+        Thing product = productCollection.getThingByName(productName);
+        if(!storageManager.removeMaterials(product.getProportions(), quantity)) {
             return false;
         }
-        storageManager.removeMaterials(product.getProportions(), quantity);
         accountManager.addMoney(product.getPrice() * quantity);
         return true;
     }
 
-    public boolean sellMaterial(String materialName, float quantity) {
-        Thing material = materialsManager.getThingByName(materialName);
-        if(!accountManager.checkEnoughMoney(material.getPrice() * quantity)) {
+    public boolean sellMaterial(String materialName, int quantity) throws Exception {
+        Thing material = materialCollection.getThingByName(materialName);
+        if(!accountManager.subMoney(material.getPrice() * quantity)) {
             return false;
         }
-        accountManager.subMoney(material.getPrice() * quantity);
         storageManager.addMaterial(material, quantity);
         return true;
     }
 
-    public Map<String, Float> getProductsPrice() {
-        List<Thing> products = productsManager.getThings();
-        Map<String, Float> result = new HashMap<String, Float>();
+    public Map<String, Double> getProductsPrice() throws Exception {
+        List<Thing> products = productCollection.getThings();
+        Map<String, Double> result = new HashMap<String, Double>();
         for (Thing product : products) {
             result.put(product.getName(), product.getPrice());
         }
         return result;
     }
 
-    public Map<String, Float> getMaterialsPrice(){
-        List<Thing> materials = materialsManager.getThings();
-        Map<String, Float> result = new HashMap<String, Float>();
+    public Map<String, Double> getMaterialsPrice() throws Exception {
+        List<Thing> materials = materialCollection.getThings();
+        Map<String, Double> result = new HashMap<String, Double>();
         for (Thing material : materials) {
             result.put(material.getName(), material.getPrice());
         }
         return result;
     }
 
-    public Map<String, Float> getStorage() {
-        Map<Thing, Float> storage = storageManager.getAllMaterials();
-        Map<String, Float> result = new HashMap<String, Float>();
+    public Map<String, Double> getStorage() throws Exception {
+        Map<Thing, Double> storage = storageManager.getAllMaterials();
+        Map<String, Double> result = new HashMap<String, Double>();
         for (Thing material : storage.keySet()) {
             result.put(material.getName(), storage.get(material));
         }
         return result;
     }
 
-    public BigDecimal getAmountOfFirmMoney() {
+    public double getAmountOfFirmMoney() throws Exception {
         return accountManager.getAmountOfMoney();
     }
 

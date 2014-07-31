@@ -1,6 +1,5 @@
 package ru.nemiroff;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +19,7 @@ public class ProductStatisticModelPool {
 
     private List<ProductStatisticModel> models = new ArrayList<ProductStatisticModel>();
 
-    public void addDeal(String product, float quantity, BigDecimal sum) {
+    public void addDeal(String product, int quantity, double sum) {
         for (ProductStatisticModel model : models) {
             if(model.getProductName().equals(product)) {
                 model.addDeal(quantity, sum);

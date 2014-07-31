@@ -17,7 +17,7 @@ import java.io.IOException;
 /**
  * Created by nemiroff on 29.07.2014.
  */
-public class FirmConfigParser {
+public class XMLFirmConfigParser {
 
     private final static String FIRM_CONFIG_XML = "Server/config/firm-config.xml";
     private final static String FIRM_CONFIG_XSD = "Server/config/firm-config.xsd";
@@ -32,14 +32,11 @@ public class FirmConfigParser {
             Validator validator = schema.newValidator();
             validator.validate(new DOMSource(document));
             return document;
-        } catch (SAXException e) {
+        } catch (Exception e) {
+            System.err.println("Error loading firm configuration. Program will be terminated");
             e.printStackTrace();
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+            System.exit(1);
         }
-        System.exit(1);
         return null;
     }
 

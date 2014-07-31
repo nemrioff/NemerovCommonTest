@@ -17,28 +17,20 @@ import java.util.Map;
 /**
  * Created by nemiroff on 29.07.2014.
  */
-public class DocumentToEntitiesMapper {
+public class XMLFirmConfig implements FirmConfig {
 
-    private Document document = FirmConfigParser.getDocument();
+    private Document document = XMLFirmConfigParser.getDocument();
 
-    private ThingsManager materialsManager = new ThingsManager();
+    private ThingCollection materialCollection = new ThingCollection();
 
-    private ThingsManager productsManager = new ThingsManager();
+    private ThingCollection productCollection = new ThingCollection();
 
-    private static DocumentToEntitiesMapper instance = null;
-
-    public static DocumentToEntitiesMapper getInstance() {
-        if(instance == null) {
-            instance = new DocumentToEntitiesMapper();
-        }
-        return instance;
-    }
-
-    private DocumentToEntitiesMapper() {
+    public XMLFirmConfig() {
         try {
             fillMaterials();
             fillProducts();
         } catch (XPathExpressionException e) {
+            System.err.println("Error creating firm configuration. Program will be terminated");
             e.printStackTrace();
             System.exit(1);
         }
@@ -50,25 +42,25 @@ public class DocumentToEntitiesMapper {
                 document.getDocumentElement(), XPathConstants.NODESET);
         List<Thing> result = new ArrayList<Thing>();
         for (int i = 0; i < nodes.getLength(); i++) {
-            Node e = nodes.item(i);
+            Node node = nodes.item(i);
             Product product = new Product();
-            NamedNodeMap attributes = e.getAttributes();
+            NamedNodeMap attributes = node.getAttributes();
             product.setName(attributes.getNamedItem("name").getNodeValue());
-            Map<Thing, Float> proportions = new HashMap<Thing, Float>();
+            Map<Thing, Double> proportions = new HashMap<Thing, Double>();
             NodeList proportionNodes = (NodeList)xPath.evaluate("proportions/proportion",
-                    e, XPathConstants.NODESET);
+                    node, XPathConstants.NODESET);
             for (int j = 0; j < proportionNodes.getLength(); j++) {
                 Node proportion = proportionNodes.item(j);
                 NamedNodeMap proportionAttributes = proportion.getAttributes();
-                Thing material = materialsManager.getThingByName(
+                Thing material = materialCollection.getThingByName(
                         proportionAttributes.getNamedItem("material").getNodeValue());
                 proportions.put(material,
-                        Float.parseFloat(proportionAttributes.getNamedItem("quantity").getNodeValue()));
+                        Double.parseDouble(proportionAttributes.getNamedItem("quantity").getNodeValue()));
             }
             product.setProportions(proportions);
             result.add(product);
         }
-        productsManager.setThings(result);
+        productCollection.setThings(result);
     }
 
     private void fillMaterials() throws XPathExpressionException {
@@ -77,22 +69,22 @@ public class DocumentToEntitiesMapper {
                 document.getDocumentElement(), XPathConstants.NODESET);
         List<Thing> materials = new ArrayList<Thing>();
         for (int i = 0; i < nodes.getLength(); i++) {
-            Node e = nodes.item(i);
+            Node node = nodes.item(i);
             Material material = new Material();
-            NamedNodeMap attributes = e.getAttributes();
+            NamedNodeMap attributes = node.getAttributes();
             material.setName(attributes.getNamedItem("name").getNodeValue());
-            material.setPrice(Float.valueOf(attributes.getNamedItem("price").getNodeValue()));
+            material.setPrice(Double.valueOf(attributes.getNamedItem("price").getNodeValue()));
             materials.add(material);
         }
-        materialsManager.setThings(materials);
+        materialCollection.setThings(materials);
     }
 
-    public ThingsManager getMaterialsManager() {
-        return materialsManager;
+    public ThingCollection getMaterialCollection() {
+        return materialCollection;
     }
 
-    public ThingsManager getProductsManager() {
-        return productsManager;
+    public ThingCollection getProductCollection() {
+        return productCollection;
     }
 
 }

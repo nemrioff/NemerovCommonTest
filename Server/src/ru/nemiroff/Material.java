@@ -7,18 +7,18 @@ import java.util.Map;
  */
 public class Material extends Thing {
 
-    private float price;
+    private double price;
 
-    public float getPrice() {
+    public double getPrice() {
         return price;
     }
 
     @Override
-    public Map<Thing, Float> getProportions() {
+    public Map<Thing, Double> getProportions() {
         return null;
     }
 
-    public void setPrice(Float price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 }

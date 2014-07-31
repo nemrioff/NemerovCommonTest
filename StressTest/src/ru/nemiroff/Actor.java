@@ -12,10 +12,18 @@ public abstract class Actor implements Callable<StatisticModel> {
 
     protected static boolean terminate = false;
 
+    protected static boolean loggingEnabled;
+
     protected Random random = new Random();
 
     protected Actor(int id) {
         this.id = id;
+    }
+
+    protected void log(String message) {
+        if(loggingEnabled) {
+            System.out.println(message);
+        }
     }
 
 }

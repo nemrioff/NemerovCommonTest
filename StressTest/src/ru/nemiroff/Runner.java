@@ -13,22 +13,79 @@ import java.util.concurrent.Future;
 /**
  * Created by nemiroff on 30.07.2014.
  */
+
+//TODO: ugly class. Need to refactor
 public class Runner {
 
     public static void main(String[] args) {
 
         Properties properties = new Properties();
         try {
-            properties.load(new FileInputStream("StressTest/params.properties"));
+            properties.load(new FileInputStream("StressTest/config.properties"));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        Config.getInstance();
+        String rmiHost = properties.getProperty("rmi.host");
+        int rmiPort = Integer.parseInt(properties.getProperty("rmi.port"));
+        String serviceName = properties.getProperty("rmi.service.name");
+        boolean loggingEnabled = properties.getProperty("logToConsoleInActor").equals("true");
+
+        ServiceHelper.startService(rmiHost, rmiPort, serviceName);
+
+        FirmConfig.getInstance();
         ProductStatisticModelPool.getInstance();
 
+        Actor.loggingEnabled = loggingEnabled;
+
+        try {
+            List<CustomerStatisticModel> model = doThreadsWork(properties);
+            Writer ordersByCustomer = new FileWriter("ordersByCustomer.csv");
+            List<Record> records = ModelsToRecords.getOrdersByCustomerRecords(model);
+            new StatisticTable(records, ordersByCustomer).printTable();
+            ordersByCustomer.close();
+
+            List<ProductStatisticModel> productModel = ProductStatisticModelPool.getInstance().getModel();
+            Writer ordersByProducts = new FileWriter("ordersByProducts.csv");
+            records = ModelsToRecords.getOrdersByProductsRecords(productModel);
+            new StatisticTable(records, ordersByProducts).printTable();
+            ordersByProducts.close();
+
+            Map<String, Double> storage = ServiceHelper.getService().getStorage();
+            Writer storageWriter = new FileWriter("storage.csv");
+            records = ModelsToRecords.getStorageRecords(storage);
+            new StatisticTable(records, storageWriter).printTable();
+            storageWriter.close();
+
+            final double money = ServiceHelper.getService().getAmountOfFirmMoney();
+            Writer moneyWriter = new FileWriter("money.csv");
+            Record moneyRecord = new Record() {
+                @Override
+                public String getHeader() {
+                    return getRecord("Firm money");
+                }
+                @Override
+                public String getRecordPreview() {
+                    return getRecord(money);
+                }
+            };
+            List<Record> recordList = new ArrayList<Record>(1);
+            recordList.add(moneyRecord);
+            new StatisticTable(recordList, moneyWriter).printTable();
+            moneyWriter.close();
+
+            System.out.println("Statistic files are in the current folder");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        System.exit(0);
+
+    }
+
+    private static List<CustomerStatisticModel> doThreadsWork(Properties properties) {
         int customerQt = Integer.parseInt(properties.getProperty("customer.quantity"));
-        float customerMoney = Float.parseFloat(properties.getProperty("customer.money"));
+        double customerMoney = Double.parseDouble(properties.getProperty("customer.money"));
         int customerMaxDenials = Integer.parseInt(properties.getProperty("customer.maxDenials"));
         int providerQt = Integer.parseInt(properties.getProperty("provider.quantity"));
         int providerInterval = Integer.parseInt(properties.getProperty("provider.interval.ms"));
@@ -63,34 +120,7 @@ public class Runner {
                 e.printStackTrace();
             }
         }
-
-        try {
-            Writer ordersByCustomer = new FileWriter("ordersByCustomer.csv");
-            List<Record> records = ModelsToRecords.getOrdersByCustomerRecords(model);
-            new StatisticTable(records, ordersByCustomer).printTable();
-            ordersByCustomer.close();
-
-            List<ProductStatisticModel> productModel = ProductStatisticModelPool.getInstance().getModel();
-            Writer ordersByProducts = new FileWriter("ordersByProducts.csv");
-            records = ModelsToRecords.getOrdersByProductsRecords(productModel);
-            new StatisticTable(records, ordersByProducts).printTable();
-            ordersByProducts.close();
-
-            Map<String, Float> storage = ServiceHelper.getService().getStorage();
-            Writer storageWriter = new FileWriter("storage.csv");
-            records = ModelsToRecords.getStorageRecords(storage);
-            new StatisticTable(records, storageWriter).printTable();
-            storageWriter.close();
-
-            System.out.println(ServiceHelper.getService().getAmountOfFirmMoney());
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-        System.exit(0);
-
+        return model;
     }
 
 }

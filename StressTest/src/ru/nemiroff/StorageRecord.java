@@ -7,7 +7,7 @@ public class StorageRecord extends Record{
 
     private String materialName;
 
-    private float quantity;
+    private double quantity;
 
     @Override
     public String getHeader() {
@@ -16,7 +16,7 @@ public class StorageRecord extends Record{
 
     @Override
     public String getRecordPreview() {
-        float price = Config.getInstance().getMaterialsPrice().get(materialName);
+        double price = FirmConfig.getInstance().getMaterialsPrice().get(materialName);
         return getRecord(materialName, quantity, price * quantity);
     }
 
@@ -24,7 +24,7 @@ public class StorageRecord extends Record{
         this.materialName = materialName;
     }
 
-    public void setQuantity(float quantity) {
+    public void setQuantity(double quantity) {
         this.quantity = quantity;
     }
 }

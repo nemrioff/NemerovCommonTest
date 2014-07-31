@@ -8,7 +8,7 @@ import java.util.Map;
  */
 public class Storage {
 
-    private Map<Thing, Float> materials = new HashMap<Thing, Float>();
+    private Map<Thing, Double> materials = new HashMap<Thing, Double>();
 
     private static Storage instance = null;
 
@@ -21,17 +21,12 @@ public class Storage {
         return instance;
     }
 
-    public Map<Thing, Float> getMaterials() {
+    public Map<Thing, Double> getMaterials() {
         return materials;
     }
 
-    public void setMaterials(Map<Thing, Float> materials) {
+    public void setMaterials(Map<Thing, Double> materials) {
         this.materials = materials;
     }
 
-    public void ptintMaterials() {
-        for (Thing thing : materials.keySet()) {
-            System.out.println(thing.getName() + " = " + materials.get(thing));
-        }
-    }
 }

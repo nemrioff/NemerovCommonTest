@@ -5,4 +5,8 @@ package ru.nemiroff;
  */
 public class StatisticModel {
 
+    //TODO: Go from different fields in children to universal Object
+
+    // public void addDeal(...)
+
 }

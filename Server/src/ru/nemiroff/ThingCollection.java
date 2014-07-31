@@ -1,12 +1,11 @@
 package ru.nemiroff;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by nemiroff on 29.07.2014.
  */
-public class ThingsManager {
+public class ThingCollection {
 
     private List<Thing> things;
 

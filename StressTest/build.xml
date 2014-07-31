@@ -1,0 +1,36 @@
+<?xml version="1.0" ?>
+
+<project name="StressTestBuild" default="all">
+
+    <property name="appname" value="StressTest"/>
+    <property name="project.dir" value=".."/>
+    <property name="project.home" value="${project.dir}/${appname}"/>
+    <property name="src.dir" value="${project.home}/src"/>
+    <property name="class.dir" value="${project.home}/class"/>
+
+    <target name="all" depends="clean, compile, jar"/>
+
+    <target name="clean" description="Dell binaries">
+        <delete dir="${class.dir}"/>
+    </target>
+
+    <target name="compile">
+        <mkdir dir="${class.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${class.dir}" debug="true"
+               failonerror="true"
+               includeantruntime="false"/>
+    </target>
+
+    <target name="jar" depends="compile" description="make jar file">
+        <delete file="StressTest.jar"/>
+        <jar destfile="StressTest.jar"
+             basedir="${class.dir}"
+             includes="**/*.class">
+            <manifest>
+                <attribute name="Main-Class" value="ru.nemiroff.Runner" />
+            </manifest>
+        </jar>
+        <move file="StressTest.jar" todir="${project.dir}" />
+    </target>
+
+</project>

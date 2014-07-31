@@ -10,18 +10,18 @@ public class ServiceHelper {
 
     private static RMIService service = null;
 
-    public static RMIService getService() {
-        if(service == null) {
-            try {
-                Registry registry = LocateRegistry.getRegistry(null, 12345);
-                service = (RMIService) registry.lookup("RMIService");
-            } catch (Exception e) {
-                System.out.println("Error occured: " + e.getMessage());
-                System.exit(1);
-            }
+    public static void startService(String host, int port, String serviceName) {
+        try {
+            Registry registry = LocateRegistry.getRegistry(host, port);
+            service = (RMIService) registry.lookup(serviceName);
+        } catch (Exception e) {
+            System.out.println("Error occured: " + e.getMessage());
+            System.exit(1);
         }
-        return service;
+    }
 
+    public static RMIService getService() {
+        return service;
     }
 
 }

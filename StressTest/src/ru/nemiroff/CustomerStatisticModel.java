@@ -1,9 +1,5 @@
 package ru.nemiroff;
 
-import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Created by nemiroff on 31.07.2014.
  */
@@ -11,48 +7,33 @@ public class CustomerStatisticModel extends StatisticModel {
 
     private int customerId;
 
-//    private Map<String, Float> products = new HashMap<String, Float>();
+    private double money;
 
-    private float money;
+    private double spentMoney = 0;
 
-    private BigDecimal spentMoney = new BigDecimal(0);
-
-//    private int ordersCount = 0;
-
-
-    public CustomerStatisticModel(int customerId, float money) {
+    public CustomerStatisticModel(int customerId, double money) {
         this.customerId = customerId;
         this.money = money;
     }
 
-    public float getMoney() {
+    public double getMoney() {
         return money;
     }
 
-//    public Map<String, Float> getProducts() {
-//        return products;
-//    }
-
-    public void addDeal(String product, float quantity, float newMoney, float spentMoney) {
-//        if(products.containsKey(product)) {
-//            products.put(product, products.get(product) + quantity);
-//        } else {
-//            products.put(product, quantity);
-//        }
+    public synchronized void addDeal(double newMoney, double spentMoney) {
         money = newMoney;
-//        ordersCount++;
-        this.spentMoney = this.spentMoney.add(new BigDecimal(spentMoney));
+        this.spentMoney += spentMoney;
     }
 
     public int getCustomerId() {
         return customerId;
     }
 
-    public BigDecimal getSpentMoney() {
+    public double getSpentMoney() {
         return spentMoney;
     }
 
-    public void setSpentMoney(BigDecimal spentMoney) {
+    public void setSpentMoney(double spentMoney) {
         this.spentMoney = spentMoney;
     }
 }

@@ -1,7 +1,5 @@
 package ru.nemiroff;
 
-import java.math.BigDecimal;
-
 /**
  * Created by nemiroff on 31.07.2014.
  */
@@ -11,9 +9,9 @@ public class ProductStatisticModel extends StatisticModel {
 
     private int ordersCount = 0;
 
-    private float productsQt = 0;
+    private int productsQt = 0;
 
-    private BigDecimal sum = new BigDecimal(0);
+    private double sum = 0;
 
     public ProductStatisticModel(String productName) {
         this.productName = productName;
@@ -23,21 +21,21 @@ public class ProductStatisticModel extends StatisticModel {
         return productName;
     }
 
-    public void addDeal(float quantity, BigDecimal sum) {
+    public synchronized void addDeal(int quantity, double sum) {
         ordersCount++;
         this.productsQt += quantity;
-        this.sum = this.sum.add(sum);
+        this.sum += sum;
     }
 
     public int getOrdersCount() {
         return ordersCount;
     }
 
-    public float getProductsQt() {
+    public int getProductsQt() {
         return productsQt;
     }
 
-    public BigDecimal getSum() {
+    public double getSum() {
         return sum;
     }
 }

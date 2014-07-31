@@ -7,22 +7,22 @@ import java.util.Map;
  */
 public class StorageManager {
 
-    public void addMaterial(Thing material, float quantity) {
-        Map<Thing, Float> storageMaterials = Storage.getInstance().getMaterials();
-        Float value = storageMaterials.get(material);
+    public synchronized void addMaterial(Thing material, int quantity) {
+        Map<Thing, Double> storageMaterials = Storage.getInstance().getMaterials();
+        Double value = storageMaterials.get(material);
         if (value == null) {
-            storageMaterials.put(material, quantity);
+            storageMaterials.put(material, (double) quantity);
         } else {
             storageMaterials.put(material, value + quantity);
         }
     }
 
-    public boolean checkEnoughMaterial(Thing material, float portion, float quantity) {
-        Float value = Storage.getInstance().getMaterials().get(material);
+    public boolean checkEnoughMaterial(Thing material, double portion, int quantity) {
+        Double value = Storage.getInstance().getMaterials().get(material);
         return value != null && value >= (portion * quantity);
     }
 
-    public boolean checkEnoughMaterials(Map<Thing, Float> materials, float quantity) {
+    private boolean checkEnoughMaterials(Map<Thing, Double> materials, int quantity) {
         for (Thing material : materials.keySet()) {
             if(!checkEnoughMaterial(material, materials.get(material), quantity)) {
                 return false;
@@ -31,19 +31,23 @@ public class StorageManager {
         return true;
     }
 
-    public void removeMaterial(Thing material, float portion, float quantity) {
-        Map<Thing, Float> storageMaterials = Storage.getInstance().getMaterials();
-        Float value = storageMaterials.get(material);
+    public synchronized void removeMaterial(Thing material, double portion, int quantity) {
+        Map<Thing, Double> storageMaterials = Storage.getInstance().getMaterials();
+        Double value = storageMaterials.get(material);
         storageMaterials.put(material, value - portion * quantity);
     }
 
-    public void removeMaterials(Map<Thing, Float> materials, float quantity) {
+    public synchronized boolean removeMaterials(Map<Thing, Double> materials, int quantity) {
+        if(!checkEnoughMaterials(materials, quantity)) {
+            return false;
+        }
         for (Thing material : materials.keySet()) {
             removeMaterial(material, materials.get(material), quantity);
         }
+        return true;
     }
 
-    public Map<Thing, Float> getAllMaterials() {
+    public Map<Thing, Double> getAllMaterials() {
         return Storage.getInstance().getMaterials();
     }
 }

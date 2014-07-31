@@ -1,7 +1,5 @@
 package ru.nemiroff;
 
-import java.math.BigDecimal;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -11,20 +9,20 @@ public interface Service {
 
     /*  Main methods for buy and sell things  */
 
-    boolean buyProduct(String product, float quantity);
+    boolean buyProduct(String product, int quantity) throws Exception;
 
-    boolean sellMaterial(String material, float quantity);
+    boolean sellMaterial(String material, int quantity) throws Exception;
 
     /*  Utility methods for client work */
 
-    Map<String, Float> getProductsPrice();
+    Map<String, Double> getProductsPrice() throws Exception;
 
-    Map<String, Float> getMaterialsPrice();
+    Map<String, Double> getMaterialsPrice() throws Exception;
 
     /*  Statistic methods */
 
-    Map<String, Float> getStorage();
+    Map<String, Double> getStorage() throws Exception;
 
-    BigDecimal getAmountOfFirmMoney();
+    double getAmountOfFirmMoney() throws Exception;
 
 }

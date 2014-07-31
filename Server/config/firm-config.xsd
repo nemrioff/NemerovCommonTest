@@ -13,7 +13,7 @@
             <xs:simpleContent>
                 <xs:extension base="xs:string">
                     <xs:attribute type="xs:string" name="material" use="required"/>
-                    <xs:attribute type="xs:float" name="quantity" use="required"/>
+                    <xs:attribute type="xs:double" name="quantity" use="required"/>
                 </xs:extension>
             </xs:simpleContent>
         </xs:complexType>
@@ -60,7 +60,7 @@
             <xs:simpleContent>
                 <xs:extension base="xs:string">
                     <xs:attribute type="xs:string" name="name" use="required"/>
-                    <xs:attribute type="xs:float" name="price" use="required"/>
+                    <xs:attribute type="xs:double" name="price" use="required"/>
                 </xs:extension>
             </xs:simpleContent>
         </xs:complexType>

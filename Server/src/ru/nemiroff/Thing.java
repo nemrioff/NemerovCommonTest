@@ -9,7 +9,7 @@ public abstract class Thing {
 
     private String name;
 
-    public abstract float getPrice();
+    public abstract double getPrice();
 
     public String getName() {
         return name;
@@ -19,5 +19,5 @@ public abstract class Thing {
         this.name = name;
     }
 
-    public abstract Map<Thing, Float> getProportions();
+    public abstract Map<Thing, Double> getProportions();
 }

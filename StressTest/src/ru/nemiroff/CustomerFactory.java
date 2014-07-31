@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class CustomerFactory {
 
-    public static List<Customer> newCustomers(int quantity, int availableDenials, float money) {
+    public static List<Customer> newCustomers(int quantity, int availableDenials, double money) {
         List<Customer> result = new ArrayList<Customer>(quantity);
         for (int i = 0; i < quantity; i++) {
             result.add(new Customer(i, availableDenials, money));
