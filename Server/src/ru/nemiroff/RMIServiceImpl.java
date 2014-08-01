@@ -5,4 +5,7 @@ package ru.nemiroff;
  */
 public class RMIServiceImpl extends ServiceImpl implements RMIService {
 
+    public RMIServiceImpl(double money) {
+        super(money);
+    }
 }

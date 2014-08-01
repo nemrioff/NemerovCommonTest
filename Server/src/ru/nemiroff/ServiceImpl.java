@@ -9,11 +9,18 @@ import java.util.Map;
  */
 public class ServiceImpl implements Service {
 
-    private StorageManager storageManager = new StorageManager();
-    private AccountManager accountManager = new AccountManager();
-    private FirmConfig firmConfig = FirmConfigFactory.getConfigFactory();
-    private ThingCollection productCollection = firmConfig.getProductCollection();
-    private ThingCollection materialCollection = firmConfig.getMaterialCollection();
+    private StorageManager storageManager;
+    private AccountManager accountManager;
+    private ThingCollection productCollection;
+    private ThingCollection materialCollection;
+
+    public ServiceImpl(double money) {
+        storageManager = new StorageManager();
+        accountManager = new AccountManager(money);
+        FirmConfig firmConfig = FirmConfigFactory.getConfigFactory();
+        productCollection = firmConfig.getProductCollection();
+        materialCollection = firmConfig.getMaterialCollection();
+    }
 
     public boolean buyProduct(String productName, int quantity) throws Exception {
         Thing product = productCollection.getThingByName(productName);

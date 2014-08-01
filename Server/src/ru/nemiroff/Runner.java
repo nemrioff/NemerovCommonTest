@@ -15,14 +15,14 @@ public class Runner {
         try {
             Properties properties = new Properties();
             properties.load(new FileInputStream("Server/config.properties"));
+            RMIService service;
             if(args.length > 0) {
-                Account.getInstance().setMoney(Double.parseDouble(args[0]));
+                 service = new RMIServiceImpl(Double.parseDouble(args[0]));
             } else {
                 System.out.println("You should specify the initial capital in the first argument");
                 return;
             }
 
-            RMIService service = new RMIServiceImpl();
             RMIService stub = (RMIService) UnicastRemoteObject.exportObject(service, 0);
 
             Registry registry = LocateRegistry.createRegistry(Integer.parseInt(properties.getProperty("rmi.port")));

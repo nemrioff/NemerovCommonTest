@@ -5,7 +5,11 @@ package ru.nemiroff;
  */
 public class AccountManager {
 
-    private Account account = Account.getInstance();
+    private Account account;
+
+    public AccountManager(double money) {
+        account = new Account(money);
+    }
 
     public synchronized void addMoney(double money) {
         account.setMoney(account.getMoney() + money);
@@ -23,10 +27,6 @@ public class AccountManager {
 
     public double getAmountOfMoney() {
         return account.getMoney();
-    }
-
-    public void setMoney(double money) {
-        account.setMoney(money);
     }
 
 }
